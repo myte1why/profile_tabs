@@ -1,0 +1,185 @@
+$itemsCount: 4;
+$arkafon: rgba(239,246,238,1);
+
+$vividCerulean  : rgba(0, 164, 251, 1);
+$trueBlue       : rgba(2, 127, 202, 1);
+$seaBlue        : rgba(0, 97, 148, 1);
+$prusianBlue    : rgba(0, 51, 84, 1);
+$richBlack      : rgba(2, 23, 35, 1);
+$white          : white;
+$honeydew       : rgba(239,246,238,1);
+$powderblue     : rgba(178,228,219,1);
+$lightblue      : rgba(175,210,233,1);
+$trans          : rgba(0,0,0,0.1);
+
+$karma          : [rgb(153,221,200), rgb(149,191,116), rgb(101,155,94), rgb(85,111,68)];
+
+// General
+body {
+  background: $arkafon;
+  font-family: sans-serif;
+}
+
+
+h1 {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1;
+  color: $prusianBlue;
+}
+
+// Layout
+.page {
+  width: 100vw;
+  height: 100vh;
+  min-height: 700px;
+  overflow: hidden;
+}
+
+// Tabs
+.tabs-controls {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 50px 0 100px;
+  list-style-type: none;
+}
+
+.tabs-controls__link {
+  position: relative;
+  display: block;
+  padding: 16px 32px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #423E37;
+  text-transform: uppercase;
+  text-decoration: none;
+
+  &:after {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: block;
+    width: 0;
+    height: 4px;
+    background-color: $powderblue;
+    border-radius: 2px;
+    margin: auto;
+    content: '';
+    transition: width 0.4s;
+  }
+
+}
+
+.tabs-controls__link--active {
+  &:after {
+    width: 100%;
+  }
+}
+
+// karts
+.karts-container {
+  position: relative;
+  z-index: 1;
+  width: 75vw;
+  height: calc(100vh - 205px);
+  margin: 0 auto;
+}
+
+.kart {
+  position: absolute;
+  width: 100%;
+  height: 50vh;
+  background-color: $lightblue;
+  border: 1px solid $trans;
+  box-shadow: 3px 10px 3px 0px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  padding: 40px;
+
+  transition: transform 0.3s, opacity 0.2s;
+
+    @for $i from 1 through $itemsCount {
+      &:nth-of-type(#{$i}) {
+        background: nth($karma, $i);
+      }
+    }
+
+  &.hidden {
+    z-index: 100;
+    background-color: $lightblue;
+    color: #fff;
+    opacity: 0;
+
+    transition: color 0.5s, background-color 0.5s, transform 1s, opacity 0.2s 0.4s;
+
+    h1 {
+      color: #fff;
+
+      transition: color 0.5s
+    }
+
+    @for $i from 1 through $itemsCount {
+      &:nth-of-type(#{$i}) {
+        background: nth($karma, $i);
+        transform: rotate(random(100) - 100 + deg) translateX((random(1) + 100) * 1%) translateY(random(60) * -1%) scale(random(10)*0.1) skewX(random(12) + deg) skewY(random(12) + deg);
+      }
+    }
+  }
+
+  @for $i from 1 through $itemsCount {
+    $zIndexStartValue: $itemsCount + 1; // we don't want an item with 0 index
+    $xValue: ($i - 1) * 10px; // we want to start translating from 0
+    $yValue: ($i - 1) * 10px; // we want to start translating from 0
+    $zIndexValue: $itemsCount - $i; // reverse the z-index, so first item is on top
+
+    &:nth-of-type(#{$i}) {
+      z-index: $zIndexValue;
+      transform: translateX(#{$xValue}) translateY(#{$yValue});
+    }
+  }
+}
+#d1,#d2,#d3{
+  display: none;
+  margin: 1em;
+  width: 100%;
+
+}
+.kart:nth-of-type(2){
+  display: inline-flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  label{
+    font-size: 1.5em;
+    font-style: bold;
+    height      : min-content;
+  }
+  
+}
+#l1:hover ~ #d1,
+#l2:hover ~ #d2,
+#l3:hover ~ #d3{
+  display: block;
+}
+
+svg.ileti-svg {
+    height: 2em;
+    width: 2em;
+    margin-bottom: 1em;
+}
+@include tablets{
+  .tabs-controls{
+    display: block;
+    padding: 0;
+  }
+  .karts-container{
+    width: 100%;
+    height: fill
+  }
+}
